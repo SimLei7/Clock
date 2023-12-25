@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Screen</title>
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="apple-touch-icon" href="img/icon.png">
+    <link rel="shortcut icon" href="img/icon.png" type="image/png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+<body>
+    <div class="main">
+       
+
+        <div class="a">
+            <h1 class="clock">10:09</h1>
+        </div>
+
+        <div class="b">
+            <h2 class="date"></h2>
+        </div>
+
+        <div class="c">
+            <!--Wetter-->
+            <a class="weatherwidget-io" href="https://forecast7.com/de/48d3710d90/augsburg/" data-label_1="Augsburg" data-label_2="Wetter" data-font="Roboto" data-days="7" data-theme="pure" data-basecolor="#F5F5F5" >LANGWEID AM LECH WEATHER</a>
+            <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+            </script>
+        
+        </div>
+
+        
+
+    </div>
+
+
+
+
+
+    <script src="main.js"></script>
+</body>
+</html>
