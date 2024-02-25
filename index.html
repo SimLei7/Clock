@@ -100,22 +100,35 @@ body {
         function displayDateTimeBerlin() {
             var berlinTimeDiv = document.getElementById('time');
             var berlinDateDiv = document.getElementById('date');
-            //var secondsDiv = document.getElementById('seconds');
 
             setInterval(function() {
                 var now = new Date();
-                var options = { day: '2-digit', month: 'long', year: 'numeric' };
-                var berlinDate = now.toLocaleDateString('de-DE', { timeZone: 'Europe/Berlin', ...options });
-                var hours = now.getHours();
-                var minutes = now.getMinutes();
-                var seconds = now.getSeconds();
-                //secondsDiv.textContent = ":" + seconds;
-                berlinTimeDiv.textContent = (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
+                var berlinDate = formatDate(now);
+                var berlinTime = formatTime(now);
+
                 berlinDateDiv.textContent = berlinDate;
+                berlinTimeDiv.textContent = berlinTime;
             }, 1000);
         }
 
+        // Funktion zum Formatieren des Datums
+        function formatDate(date) {
+            var day = ('0' + date.getDate()).slice(-2);
+            var month = ('0' + (date.getMonth() + 1)).slice(-2);
+            var year = date.getFullYear();
+            return day + '. ' + month + '. ' + year;
+        }
+
+        // Funktion zum Formatieren der Zeit
+        function formatTime(date) {
+            var hours = ('0' + date.getHours()).slice(-2);
+            var minutes = ('0' + date.getMinutes()).slice(-2);
+            return hours + ':' + minutes;
+        }
+
+        // Aufruf der Funktion zum Anzeigen von Datum und Uhrzeit von Berlin
         displayDateTimeBerlin();
+
 
     </script>
 </body>
