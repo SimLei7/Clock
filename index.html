@@ -1,139 +1,327 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, minimal-ui" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    
-    <title>Uhrzeit und Temperatur</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wetter & Zeit</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/css/weather-icons.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0f1923;
+            color: #ffffff;
+            font-family: -apple-system, Helvetica, Arial, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            padding: 0 40px;
+            text-align: center;
+        }
+
+        /* ── DATUM ── */
+        .date {
+            font-size: 28px;
+            color: #8a9bb0;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        /* ── UHRZEIT ── */
+        .time {
+            font-size: 140px;
+            font-weight: 200;
+            letter-spacing: -4px;
+            line-height: 1;
+            margin-bottom: 40px;
+        }
+
+        /* ── AKTUELLES WETTER ── */
+        .current-weather {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .current-weather .wi {
+            font-size: 90px;
+            color: #89cff0;
+            margin-right: 24px;
+        }
+
+        .current-temp {
+            font-size: 110px;
+            font-weight: 300;
+            line-height: 1;
+        }
+
+        /* ── META-ZEILE: H/T + WIND ── */
+        .meta-row {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #8a9bb0;
+            margin-bottom: 10px;
+        }
+
+        .meta-row .high  { color: #ff6b6b; }
+        .meta-row .low   { color: #74b9ff; }
+        .meta-row .sep   { margin: 0 20px; color: #1e2d3d; }
+        .meta-row .wind  { color: #8a9bb0; }
+        .meta-row .wind .wi {
+            font-size: 22px;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        /* ── LETZTES UPDATE ── */
+        .last-update {
+            font-size: 14px;
+            color: #3a4f63;
+            margin-bottom: 36px;
+            letter-spacing: 0.03em;
+        }
+
+        /* ── TRENNLINIE ── */
+        .divider {
+            border: none;
+            border-top: 1px solid #1e2d3d;
+        }
+
+        /* ── STUNDEN-LEISTE ── */
+        .hourly {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-direction: row;
+            flex-direction: row;
+        }
+
+        .hour-block {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            padding: 26px 0;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -webkit-flex-direction: column;
+            flex-direction: column;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+
+        .hour-block + .hour-block {
+            border-left: 1px solid #1e2d3d;
+        }
+
+        .hour-label {
+            font-size: 17px;
+            color: #8a9bb0;
+            margin-bottom: 12px;
+            letter-spacing: 0.03em;
+        }
+
+        .hour-block .wi {
+            font-size: 36px;
+            color: #c0cfde;
+            margin-bottom: 12px;
+        }
+
+        .hour-temp {
+            font-size: 24px;
+            font-weight: 500;
+        }
+    </style>
 </head>
-<style>
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Moderne Schriftart */
-    background-image: url('./background.jpg'); /* Überprüfen Sie den Pfad zum Bild */
-    background-size: cover;
-    background-position: center;
-    color: white;
-}
-
-.container {
-    display: flex;
-    justify-content: center;
-
-    height: 100vh;
-}
-
-.datetime {
-    text-align: center;
-}
-
-#time {
-    font-size: 20em;
-    margin-bottom: 20px;
-}
-
-#temperature {
-    font-size: 3em;
-    margin-bottom: 10px;
-}
-
-#date {
-    font-size: 3em;
-    margin-top: 1em;
-}
-
-#seconds{
-    font-size: 0.3em;
-}
-
-.time{
-    display: flex;
-    position: relative;
-}
-    
-</style>
 <body>
     <div class="container">
-        <div class="datetime">
-            <div id="date">25. Februar 2024</div>
-            <div id="time">12:00 <span id="seconds"></span></div>
-            <div id="temperature">25°C</div>
+
+        <div class="date" id="date">–</div>
+        <div class="time" id="time">–</div>
+
+        <div class="current-weather">
+            <i class="wi wi-day-sunny" id="current-icon"></i>
+            <div class="current-temp" id="current-temp">–°</div>
         </div>
+
+        <div class="meta-row" id="meta-row">
+            <span class="high">H: –°</span>
+            <span class="low">T: –°</span>
+            <span class="sep">|</span>
+            <span class="wind"><i class="wi wi-strong-wind"></i>– km/h</span>
+        </div>
+
+        <div class="last-update" id="last-update">Aktualisiert: –</div>
+
+        <hr class="divider">
+
+        <div class="hourly" id="hourly"></div>
+
     </div>
 
     <script>
+        function wmoIcon(code, is_day) {
+            var night = (is_day === 0);
+            if (code === 0)  return night ? 'wi-night-clear'             : 'wi-day-sunny';
+            if (code === 1)  return night ? 'wi-night-alt-partly-cloudy' : 'wi-day-sunny-overcast';
+            if (code === 2)  return night ? 'wi-night-alt-cloudy'        : 'wi-day-cloudy';
+            if (code === 3)  return 'wi-cloudy';
+            if (code <= 49)  return 'wi-fog';
+            if (code <= 57)  return 'wi-sprinkle';
+            if (code <= 67)  return night ? 'wi-night-alt-rain'          : 'wi-day-rain';
+            if (code <= 77)  return 'wi-snow';
+            if (code <= 82)  return night ? 'wi-night-alt-showers'       : 'wi-day-showers';
+            if (code <= 86)  return 'wi-snow';
+            if (code <= 99)  return night ? 'wi-night-alt-thunderstorm'  : 'wi-day-thunderstorm';
+            return 'wi-na';
+        }
 
-        // URL, die die JSON-Daten liefert
-        var url = 'https://api.open-meteo.com/v1/forecast?latitude=48.4909&longitude=10.8531&current=temperature_2m&daily=temperature_2m_max,temperature_2m_min&timezone=Europe%2FBerlin&forecast_days=1';
+        function hourFromISO(s) {
+            return parseInt(s.split('T')[1].split(':')[0], 10);
+        }
 
-        // Funktion zum Abrufen der JSON-Daten von der URL
-        function fetchData(url) {
+        function isDay(hour) {
+            return (hour >= 6 && hour < 21) ? 1 : 0;
+        }
+
+        function pad(n) { return ('0' + n).slice(-2); }
+
+        var API_URL = 'https://api.open-meteo.com/v1/forecast'
+            + '?latitude=48.4909&longitude=10.8531'
+            + '&current=temperature_2m,weathercode,is_day,wind_speed_10m'
+            + '&hourly=temperature_2m,weathercode'
+            + '&daily=temperature_2m_max,temperature_2m_min'
+            + '&timezone=Europe%2FBerlin'
+            + '&wind_speed_unit=kmh'
+            + '&forecast_days=2';
+
+        function fetchWeather() {
             var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        var data = JSON.parse(xhr.responseText);
-                        var temperatureNow = data.current.temperature_2m;
-                        var maxTemperature = data.daily.temperature_2m_max[0];
-                        var minTemperature = data.daily.temperature_2m_min[0];
-                        document.getElementById("temperature").innerText =  Math.round(temperatureNow) + "°C (H: "+Math.round(maxTemperature)+" T: "+Math.round(minTemperature)+")";
-                        console.log('Maximale Temperatur:', maxTemperature, '°C');
-                        console.log('Minimale Temperatur:', minTemperature, '°C');
-                    } else {
-                        console.error('There was a problem with your fetch operation:', xhr.statusText);
-                    }
-                }
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState !== 4) return;
+                if (xhr.status !== 200) return;
+                renderWeather(JSON.parse(xhr.responseText));
             };
-            xhr.open('GET', url);
+            xhr.open('GET', API_URL);
             xhr.send();
-            setInterval(displayTemperature, 30 * 60 * 1000); // Setze den Intervall auf 30 Minuten
         }
 
-        function displayTemperature() {
-            fetchData(url);
+        function renderWeather(data) {
+            var c = data.current;
+            var h = data.hourly;
+            var d = data.daily;
+
+            // Aktuelles Icon & Temp
+            document.getElementById('current-temp').innerText = Math.round(c.temperature_2m) + '°';
+            document.getElementById('current-icon').className = 'wi ' + wmoIcon(c.weathercode, c.is_day);
+
+            // H/T + Wind
+            var tMax = Math.round(d.temperature_2m_max[0]);
+            var tMin = Math.round(d.temperature_2m_min[0]);
+            var wind = Math.round(c.wind_speed_10m);
+            document.getElementById('meta-row').innerHTML =
+                '<span class="high">H: ' + tMax + '°</span>' +
+                '&nbsp;&nbsp;' +
+                '<span class="low">T: ' + tMin + '°</span>' +
+                '<span class="sep">|</span>' +
+                '<span class="wind"><i class="wi wi-strong-wind"></i>' + wind + ' km/h</span>';
+
+            // Letztes Update
+            var now = new Date();
+            document.getElementById('last-update').innerText =
+                'Aktualisiert: ' + pad(now.getHours()) + ':' + pad(now.getMinutes()) + ' Uhr';
+
+            // Stunden-Index finden (aktuelle Stunde + 1 bis +6)
+            var currentHour = now.getHours();
+            var times = h.time;
+            var temps = h.temperature_2m;
+            var codes = h.weathercode;
+
+            var startIdx = 0;
+            for (var i = 0; i < times.length; i++) {
+                if (hourFromISO(times[i]) === currentHour && i <= 23) {
+                    startIdx = i + 1; // +1: "Jetzt" nicht nochmal zeigen
+                    break;
+                }
+            }
+
+            var container = document.getElementById('hourly');
+            container.innerHTML = '';
+
+            for (var j = 0; j < 6; j++) {
+                var idx  = startIdx + j;
+                if (idx >= times.length) break;
+
+                var hour  = hourFromISO(times[idx]);
+                var temp  = Math.round(temps[idx]);
+                var icon  = wmoIcon(codes[idx], isDay(hour));
+
+                var block = document.createElement('div');
+                block.className = 'hour-block';
+                block.innerHTML =
+                    '<div class="hour-label">' + pad(hour) + ':00</div>' +
+                    '<i class="wi ' + icon + '"></i>' +
+                    '<div class="hour-temp">' + temp + '°</div>';
+                container.appendChild(block);
+            }
         }
 
-        displayTemperature();
+        fetchWeather();
+        setInterval(fetchWeather, 20 * 60 * 1000); // 20 Minuten
 
-        // Funktion zum Anzeigen von Datum und Uhrzeit von Berlin
-        function displayDateTimeBerlin() {
-            var berlinTimeDiv = document.getElementById('time');
-            var berlinDateDiv = document.getElementById('date');
+        // Datum & Uhrzeit
+        var MONTHS = ['Januar','Februar','März','April','Mai','Juni',
+                      'Juli','August','September','Oktober','November','Dezember'];
+        var DAYS   = ['Sonntag','Montag','Dienstag','Mittwoch',
+                      'Donnerstag','Freitag','Samstag'];
 
-            setInterval(function() {
-                var now = new Date();
-                var berlinDate = formatDate(now);
-                var berlinTime = formatTime(now);
-
-                berlinDateDiv.textContent = berlinDate;
-                berlinTimeDiv.textContent = berlinTime;
-            }, 1000);
+        function tick() {
+            var now = new Date();
+            document.getElementById('date').innerText =
+                DAYS[now.getDay()] + ', ' + now.getDate() + '. ' +
+                MONTHS[now.getMonth()] + ' ' + now.getFullYear();
+            document.getElementById('time').innerText =
+                pad(now.getHours()) + ':' + pad(now.getMinutes());
         }
 
-        // Funktion zum Formatieren des Datums
-        function formatDate(date) {
-            var day = ('0' + date.getDate()).slice(-2);
-            var month = ('0' + (date.getMonth() + 1)).slice(-2);
-            var year = date.getFullYear();
-            return day + '. ' + month + '. ' + year;
-        }
-
-        // Funktion zum Formatieren der Zeit
-        function formatTime(date) {
-            var hours = ('0' + date.getHours()).slice(-2);
-            var minutes = ('0' + date.getMinutes()).slice(-2);
-            return hours + ':' + minutes;
-        }
-
-        // Aufruf der Funktion zum Anzeigen von Datum und Uhrzeit von Berlin
-        displayDateTimeBerlin();
-
-
+        tick();
+        setInterval(tick, 1000);
     </script>
 </body>
 </html>
