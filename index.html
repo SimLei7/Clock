@@ -51,7 +51,7 @@
             font-weight: 200;
             letter-spacing: -4px;
             line-height: 1;
-            margin-bottom: 40px;
+            margin-bottom: 32px;
         }
 
         /* ── AKTUELLES WETTER ── */
@@ -68,10 +68,12 @@
             margin-bottom: 12px;
         }
 
+        /* Icon jetzt gleich groß wie Temp */
         .current-weather .wi {
-            font-size: 90px;
+            font-size: 60px;
             color: #89cff0;
-            margin-right: 24px;
+            margin-right: 16px;
+            line-height: 1;
         }
 
         .current-temp {
@@ -93,13 +95,12 @@
             justify-content: center;
             font-size: 28px;
             color: #8a9bb0;
-            margin-bottom: 10px;
+            margin-bottom: 14px;
         }
 
-        .meta-row .high  { color: #ff6b6b; }
-        .meta-row .low   { color: #74b9ff; }
-        .meta-row .sep   { margin: 0 20px; color: #1e2d3d; }
-        .meta-row .wind  { color: #8a9bb0; }
+        .meta-row .high { color: #ff6b6b; }
+        .meta-row .low  { color: #74b9ff; }
+        .meta-row .sep  { margin: 0 20px; color: #1e2d3d; }
         .meta-row .wind .wi {
             font-size: 22px;
             margin-right: 6px;
@@ -108,9 +109,9 @@
 
         /* ── LETZTES UPDATE ── */
         .last-update {
-            font-size: 14px;
-            color: #3a4f63;
-            margin-bottom: 36px;
+            font-size: 22px;
+            color: #5a7a96;
+            margin-bottom: 32px;
             letter-spacing: 0.03em;
         }
 
@@ -182,6 +183,7 @@
 
         <div class="meta-row" id="meta-row">
             <span class="high">H: –°</span>
+            &nbsp;&nbsp;
             <span class="low">T: –°</span>
             <span class="sep">|</span>
             <span class="wind"><i class="wi wi-strong-wind"></i>– km/h</span>
@@ -247,11 +249,9 @@
             var h = data.hourly;
             var d = data.daily;
 
-            // Aktuelles Icon & Temp
             document.getElementById('current-temp').innerText = Math.round(c.temperature_2m) + '°';
             document.getElementById('current-icon').className = 'wi ' + wmoIcon(c.weathercode, c.is_day);
 
-            // H/T + Wind
             var tMax = Math.round(d.temperature_2m_max[0]);
             var tMin = Math.round(d.temperature_2m_min[0]);
             var wind = Math.round(c.wind_speed_10m);
@@ -262,12 +262,10 @@
                 '<span class="sep">|</span>' +
                 '<span class="wind"><i class="wi wi-strong-wind"></i>' + wind + ' km/h</span>';
 
-            // Letztes Update
             var now = new Date();
             document.getElementById('last-update').innerText =
                 'Aktualisiert: ' + pad(now.getHours()) + ':' + pad(now.getMinutes()) + ' Uhr';
 
-            // Stunden-Index finden (aktuelle Stunde + 1 bis +6)
             var currentHour = now.getHours();
             var times = h.time;
             var temps = h.temperature_2m;
@@ -276,7 +274,7 @@
             var startIdx = 0;
             for (var i = 0; i < times.length; i++) {
                 if (hourFromISO(times[i]) === currentHour && i <= 23) {
-                    startIdx = i + 1; // +1: "Jetzt" nicht nochmal zeigen
+                    startIdx = i + 1;
                     break;
                 }
             }
@@ -303,9 +301,8 @@
         }
 
         fetchWeather();
-        setInterval(fetchWeather, 20 * 60 * 1000); // 20 Minuten
+        setInterval(fetchWeather, 20 * 60 * 1000);
 
-        // Datum & Uhrzeit
         var MONTHS = ['Januar','Februar','März','April','Mai','Juni',
                       'Juli','August','September','Oktober','November','Dezember'];
         var DAYS   = ['Sonntag','Montag','Dienstag','Mittwoch',
