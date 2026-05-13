@@ -224,14 +224,15 @@
 
         function pad(n) { return ('0' + n).slice(-2); }
 
-        var API_URL = 'https://api.open-meteo.com/v1/forecast'
-            + '?latitude=48.4909&longitude=10.8531'
+        var API_URL = 'https://api.open-meteo.com/v1/dwd-icon'
+            + '?latitude=48.48366367790428&longitude=10.85759535196558'
             + '&current=temperature_2m,weathercode,is_day,wind_speed_10m'
             + '&hourly=temperature_2m,weathercode'
             + '&daily=temperature_2m_max,temperature_2m_min'
             + '&timezone=Europe%2FBerlin'
             + '&wind_speed_unit=kmh'
-            + '&forecast_days=2';
+            + '&forecast_days=2'
+            + '&cell_selection=nearest';
 
         function fetchWeather() {
             var xhr = new XMLHttpRequest();
